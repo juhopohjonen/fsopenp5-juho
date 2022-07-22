@@ -3,8 +3,10 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import CreateNew from './components/CreateNew'
+import { SuccessMessage, FailedMessage } from './components/messages'
 
 const Blogs = ({ blogs, user, logoutFunc, setBlogs }) => {
+
 
 
   const likeBlog = async (blog, likes) => {
@@ -40,8 +42,9 @@ const Blogs = ({ blogs, user, logoutFunc, setBlogs }) => {
 
   return (
     <div>
+
       <h2>blogs</h2>
-      <p>{user.name} logged in<button onClick={logoutFunc}>logout</button></p>
+      <p id='loggedInView'>{user.name} logged in<button onClick={logoutFunc}>logout</button></p>
       {blogs.map(blog => <Blog likeFunction={likeBlog} user={user} blogs={blogs} setBlogs={setBlogs} key={blog.id} blog={blog} />)}
     
       <CreateNew 
@@ -60,6 +63,10 @@ const SignIn = ({ setUserState, visibility, toggleVisibility }) => {
 
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
+
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [failedMessage, setFailedMessage] = useState(null)
+
 
   const changeName = (e) => {
     setUserName(e.target.value)
@@ -91,24 +98,30 @@ const SignIn = ({ setUserState, visibility, toggleVisibility }) => {
       setUserName('')
       setPassword('')
     } catch (e) {
-      alert('wrong credintials!')
+      setFailedMessage('wrong credintials!')
+      setTimeout(() => {
+        setFailedMessage(null)
+      }, 5000)
     }
   }
 
   return (
-    <div>
+    <div id='loginDiv'>
+
+      <SuccessMessage id='success' message={successMessage} />
+      <FailedMessage id='failed' message={failedMessage} /> 
       <h2>log in to application</h2>
       <form onSubmit={submitLogin}>
         <div>
           username
-          <input value={username} onChange={changeName} />
+          <input id='username' value={username} onChange={changeName} />
         </div>
         <div>
           password
-          <input type={'password'} value={password} onChange={changePass} />
+          <input type={'password'} id='pass' value={password} onChange={changePass} />
         </div>
 
-        <input type='submit' />
+        <input type='submit' id='submit' />
       </form>
 
       <button onClick={toggleVisibility}>cancel</button>
@@ -118,7 +131,7 @@ const SignIn = ({ setUserState, visibility, toggleVisibility }) => {
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [loginVisible, setLoginVisible] = useState(false)
+  const [loginVisible, setLoginVisible] = useState(true)
 
   const hideWhenVisible = { display: loginVisible ? 'none' : '' }
   const showWhenVisible = { display: loginVisible ? '' : 'none' }

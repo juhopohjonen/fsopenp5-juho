@@ -64,7 +64,7 @@ const CreateNew = ({ setBlogs, blogs, createBlogFunc }) => {
                 <div>author:<input id="authorinput" value={author} onChange={(e) => setAuthor(e.target.value)} /></div>
                 <div>url:<input id="urlinput" value={url} onChange={(e) => setUrl(e.target.value)} /></div>
 
-                <input type='submit' value={'create'} />
+                <input type='submit' id="createButton" value={'create'} />
             </form>
             <button style={showWhenVisible} onClick={() => setNewVisible(false)}>cancel</button>
         </div>
